@@ -8,10 +8,10 @@
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in
 # all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -19,7 +19,7 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-# 
+#
 """The crc8 module.
 
 The crc8 module provides the same interface as the hashlib module.
@@ -91,6 +91,10 @@ class crc8(object):
         """
         self._update(bytes_)
 
+    def set_initial_value(self, initial_value):
+        """ Set initial value for the crc calculation """
+        self._sum = initial_value
+
     def digest(self):
         """Return the digest of the bytes passed to the update() method so far.
 
@@ -107,7 +111,7 @@ class crc8(object):
         exchange the value safely in email or other non-binary environments.
         """
         return hex(self._sum)[2:].zfill(2)
-        
+
     if PY2:
         def _update(self, bytes_):
             if isinstance(bytes_, unicode):
@@ -134,13 +138,13 @@ class crc8(object):
             for byte in bytes_:
                 _sum = table[_sum^byte]
             self._sum = _sum
-            
+
         def _digest(self):
             return bytes([self._sum])
-    
+
     def copy(self):
         """Return a copy ("clone") of the hash object.
-        
+
         This can be used to efficiently compute the digests of strings that
         share a common initial substring.
         """
